@@ -18,10 +18,10 @@ workflows:
   build-deploy:
     jobs:
       - deploy
-      - request-testing:
-          type: approval
-          requires:
-            - build-deploy
-      - deploy-aws:
-          requires:
-            - request-testing
+  request-testing:
+    type: approval
+      requires:
+        - build-deploy
+  deploy-aws:
+      requires:
+        - request-testing
