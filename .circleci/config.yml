@@ -10,14 +10,7 @@ jobs:
           command: sudo pip install awscli
       - run:
           name: Deploy to S3 bucket
-          command: aws s3 sync . s3://adi-static-aws-circleci/ --exclude '.circleci/*' --exclude '.git/*'  
-  request-testing:
-    type: approval
-    requires:
-      - deploy
-  deploy-aws:
-    requires:
-      - request-testing  
+          command: aws s3 sync . s3://adi-static-aws-circleci/ --exclude '.circleci/*' --exclude '.git/*'
 
 
 workflows:
@@ -25,6 +18,10 @@ workflows:
   build-deploy:
     jobs:
       - deploy
-      - deploy-prod
-         --- approval
-         requires deply
+      - request-testing:
+          type: approval
+          requires:
+            - build
+      - deploy-aws:
+          requires:
+            - request-testing
