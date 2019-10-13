@@ -21,7 +21,7 @@ workflows:
       - request-testing:
           type: approval
           requires:
-            - build
+            - build-deploy
       - deploy-aws:
           requires:
             - request-testing
